@@ -110,9 +110,6 @@ namespace MyProjectForJuly2020.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("LoaiChaMaLoai")
-                        .HasColumnType("int");
-
                     b.Property<int?>("MaLoaiCha")
                         .HasColumnType("int");
 
@@ -127,7 +124,7 @@ namespace MyProjectForJuly2020.Migrations
 
                     b.HasKey("MaLoai");
 
-                    b.HasIndex("LoaiChaMaLoai");
+                    b.HasIndex("MaLoaiCha");
 
                     b.ToTable("Loai");
                 });
@@ -225,7 +222,7 @@ namespace MyProjectForJuly2020.Migrations
                 {
                     b.HasOne("MyProjectForJuly2020.Data.Loai", "LoaiCha")
                         .WithMany()
-                        .HasForeignKey("LoaiChaMaLoai");
+                        .HasForeignKey("MaLoaiCha");
                 });
 
             modelBuilder.Entity("MyProjectForJuly2020.Data.ReviewHangHoa", b =>

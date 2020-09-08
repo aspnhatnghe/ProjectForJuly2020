@@ -10,8 +10,8 @@ using MyProjectForJuly2020.Data;
 namespace MyProjectForJuly2020.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20200905132043_AddHangHoa")]
-    partial class AddHangHoa
+    [Migration("20200908122858_DbInit")]
+    partial class DbInit
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -31,6 +31,9 @@ namespace MyProjectForJuly2020.Migrations
                     b.Property<string>("ChiTiet")
                         .HasColumnType("nvarchar(200)")
                         .HasMaxLength(200);
+
+                    b.Property<double?>("DiemReview")
+                        .HasColumnType("float");
 
                     b.Property<double>("DonGia")
                         .HasColumnType("float");
@@ -80,15 +83,34 @@ namespace MyProjectForJuly2020.Migrations
                     b.ToTable("HangHoaTag");
                 });
 
+            modelBuilder.Entity("MyProjectForJuly2020.Data.HinhPhu", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("MaHangHoa")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaHangHoa");
+
+                    b.ToTable("HinhPhus");
+                });
+
             modelBuilder.Entity("MyProjectForJuly2020.Data.Loai", b =>
                 {
                     b.Property<int>("MaLoai")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("LoaiChaMaLoai")
-                        .HasColumnType("int");
 
                     b.Property<int?>("MaLoaiCha")
                         .HasColumnType("int");
@@ -104,9 +126,54 @@ namespace MyProjectForJuly2020.Migrations
 
                     b.HasKey("MaLoai");
 
-                    b.HasIndex("LoaiChaMaLoai");
+                    b.HasIndex("MaLoaiCha");
 
                     b.ToTable("Loai");
+                });
+
+            modelBuilder.Entity("MyProjectForJuly2020.Data.Review", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<bool>("Active")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Criteria")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Reviews");
+                });
+
+            modelBuilder.Entity("MyProjectForJuly2020.Data.ReviewHangHoa", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<byte>("DiemReview")
+                        .HasColumnType("tinyint");
+
+                    b.Property<Guid>("MaHangHoa")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("NgayReview")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TieuChi")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("MaHangHoa");
+
+                    b.HasIndex("TieuChi");
+
+                    b.ToTable("ReviewHangHoas");
                 });
 
             modelBuilder.Entity("MyProjectForJuly2020.Data.Tag", b =>
@@ -146,11 +213,33 @@ namespace MyProjectForJuly2020.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MyProjectForJuly2020.Data.HinhPhu", b =>
+                {
+                    b.HasOne("MyProjectForJuly2020.Data.HangHoa", "HangHoa")
+                        .WithMany("HinhPhus")
+                        .HasForeignKey("MaHangHoa");
+                });
+
             modelBuilder.Entity("MyProjectForJuly2020.Data.Loai", b =>
                 {
                     b.HasOne("MyProjectForJuly2020.Data.Loai", "LoaiCha")
                         .WithMany()
-                        .HasForeignKey("LoaiChaMaLoai");
+                        .HasForeignKey("MaLoaiCha");
+                });
+
+            modelBuilder.Entity("MyProjectForJuly2020.Data.ReviewHangHoa", b =>
+                {
+                    b.HasOne("MyProjectForJuly2020.Data.HangHoa", "HangHoa")
+                        .WithMany("ReviewHangHoas")
+                        .HasForeignKey("MaHangHoa")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MyProjectForJuly2020.Data.Review", "Review")
+                        .WithMany("ReviewHangHoas")
+                        .HasForeignKey("TieuChi")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
