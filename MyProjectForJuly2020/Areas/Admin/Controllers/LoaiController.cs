@@ -41,7 +41,10 @@ namespace MyProjectForJuly2020.Areas.Admin.Controllers
             {
                 _context.Add(lo);
                 _context.SaveChanges();
+                return RedirectToAction("Index");
             }
+
+            ViewBag.DanhSachLoaiCha = new LoaiDropDownVM(_context.Loais, "MaLoai", "TenLoai", "MaLoaiCha");
             return View();
         }
     }
