@@ -30,7 +30,7 @@ namespace MyProjectForJuly2020.Data
                     .HasDefaultValueSql("newid()");
                 e.Property(hh => hh.TenHh)
                 .IsRequired().HasMaxLength(100);
-                e.Property(hh => hh.ChiTiet).HasMaxLength(200);
+                e.Property(hh => hh.MoTa).HasMaxLength(200);
                 e.HasIndex(hh => hh.TenHh).IsUnique();
 
                 e.HasOne(hh => hh.Loai)
