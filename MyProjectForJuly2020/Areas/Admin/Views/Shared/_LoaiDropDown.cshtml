@@ -12,9 +12,16 @@
         <option value="@lv1.MaLoai">@lv1.TenLoai</option>
         @foreach (var lv2 in level2)
         {
+            var level3 = allLoai.Where(lo => lo.MaLoaiCha == lv2.MaLoai).ToList();
             <option value="@lv2.MaLoai">
                 |___@lv2.TenLoai
             </option>
+            @foreach (var lv3 in level3)
+            {
+                <option value="@lv3.MaLoai">
+                    |______@lv3.TenLoai
+                </option>
+            }
         }
     }
 </select>

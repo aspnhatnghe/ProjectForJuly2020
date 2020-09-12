@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using MyProjectForJuly2020.Data;
 using MyProjectForJuly2020.ViewModels;
@@ -22,7 +23,7 @@ namespace MyProjectForJuly2020.Areas.Admin.Controllers
 
         public IActionResult Index()
         {
-            var data = _context.Loais.ToList();
+            var data = _context.Loais.Include(lc => lc.LoaiCha).ToList();
             return View(data);
         }
 
