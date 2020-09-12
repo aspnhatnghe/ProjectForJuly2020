@@ -35,8 +35,34 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
-    <Folder Include="ViewComponents\" />
     <Folder Include="wwwroot\Hinh\HangHoa\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\shop\fonts\font-awesome\fontawesome-webfont.svg" />
+    <None Include="wwwroot\shop\fonts\font-awesome\fontawesome-webfont.woff2" />
+    <None Include="wwwroot\shop\fonts\glyphicons-halflings-regular.svg" />
+    <None Include="wwwroot\shop\fonts\glyphicons-halflings-regular.woff2" />
+    <None Include="wwwroot\shop\fonts\pe-icon-7-stroke\Pe-icon-7-stroke.svg" />
+    <None Include="wwwroot\shop\fonts\revicons.svg" />
+    <None Include="wwwroot\shop\fonts\revicons\index.php" />
+    <None Include="wwwroot\shop\fonts\revicons\revicons.svg" />
+    <None Include="wwwroot\shop\fonts\simple-line-icons\Simple-Line-Icons.dev.svg" />
+    <None Include="wwwroot\shop\fonts\simple-line-icons\Simple-Line-Icons.svg" />
+    <None Include="wwwroot\shop\fonts\simple-line-icons\Simple-Line-Icons.woff2" />
+    <None Include="wwwroot\shop\js\bootstrap.min.js" />
+    <None Include="wwwroot\shop\js\cloud-zoom.js" />
+    <None Include="wwwroot\shop\js\countdown.js" />
+    <None Include="wwwroot\shop\js\jquery-ui.js" />
+    <None Include="wwwroot\shop\js\jquery.bxslider.js" />
+    <None Include="wwwroot\shop\js\jquery.flexslider.js" />
+    <None Include="wwwroot\shop\js\jquery.magnifying-zoom.js" />
+    <None Include="wwwroot\shop\js\jquery.min.js" />
+    <None Include="wwwroot\shop\js\main.js" />
+    <None Include="wwwroot\shop\js\mobile-menu.js" />
+    <None Include="wwwroot\shop\js\owl.carousel.min.js" />
+    <None Include="wwwroot\shop\js\revolution-extension.js" />
+    <None Include="wwwroot\shop\js\revolution-slider.js" />
   </ItemGroup>
 
 </Project>
