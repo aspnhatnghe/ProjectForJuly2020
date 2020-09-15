@@ -20,16 +20,17 @@ namespace MyProjectForJuly2020.Controllers
         public IActionResult Index(int? MaLoai)
         {
             var data = _context.HangHoas.AsQueryable();
-
             if(MaLoai.HasValue)
             {
+                ViewBag.DanhMuc = _context.Loais.FirstOrDefault(lo => lo.MaLoai == MaLoai.Value).TenLoai;
+
                 data = data.Where(hh => hh.MaLoai == MaLoai || hh.Loai.MaLoaiCha == MaLoai);
 
                 //C2
                 //List<int> dsLoai = LayDanhSachLoai(MaLoai);
                 //data = data.Where(hh => dsLoai.Contains(hh.MaLoai.Value));
             }
-
+           
             var dsHangHoa = data.Select(hh => new HangHoaVM
             {
                 MaHh = hh.MaHangHoa,
