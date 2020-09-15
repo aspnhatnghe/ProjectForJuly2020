@@ -47,7 +47,7 @@
                                                 <div class="icon-sale-label sale-left">Sale</div>
                                                 <div class="icon-new-label new-right">New</div>
                                                 <div class="pr-img-area">
-                                                    <a title="Ipsums Dolors Untra" href="single_product.html">
+                                                    <a title="Ipsums Dolors Untra" asp-controller="HangHoa" asp-action="Detail" asp-route-id="@hh.MaHh">
                                                         <figure>
                                                             <img class="first-img" src="~/Hinh/HangHoa/@hh.Hinh" alt="@hh.TenHh">
                                                             <img class="hover-img" src="~/Hinh/HangHoa/@hh.Hinh" alt="@hh.TenHh">
@@ -64,7 +64,7 @@
                                             </div>
                                             <div class="item-info">
                                                 <div class="info-inner">
-                                                    <div class="item-title"> <a title="Ipsums Dolors Untra" href="single_product.html">Ipsums Dolors Untra </a> </div>
+                                                    <div class="item-title"> <a title="Ipsums Dolors Untra" asp-controller="HangHoa" asp-action="Detail" asp-route-id="@hh.MaHh">@hh.TenHh</a> </div>
                                                     <div class="item-content">
                                                         <div class="rating"> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star"></i> <i class="fa fa-star-o"></i> <i class="fa fa-star-o"></i> </div>
                                                         <div class="item-price">

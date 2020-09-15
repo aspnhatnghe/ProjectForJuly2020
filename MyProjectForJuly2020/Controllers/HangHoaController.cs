@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using MyProjectForJuly2020.Data;
 using MyProjectForJuly2020.ViewModels;
 
@@ -66,6 +67,19 @@ namespace MyProjectForJuly2020.Controllers
 
                 DeQuyTimLoai(loaiConCanTim, danhSach);
             }
+        }
+
+        public IActionResult Detail(Guid id)
+        {
+            var hh = _context.HangHoas
+                .Include(hh => hh.Loai)
+                .FirstOrDefault(hh => hh.MaHangHoa == id);
+            if(hh == null)
+            {
+                return Redirect("/Home/PageNotFound");
+            }
+
+            return View(hh);
         }
     }
 }
