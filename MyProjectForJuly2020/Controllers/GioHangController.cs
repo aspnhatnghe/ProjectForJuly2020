@@ -25,7 +25,7 @@ namespace MyProjectForJuly2020.Controllers
             get
             {
                 var carts = HttpContext.Session.Get<List<CartItem>>("GioHang");
-                if(carts == null)
+                if (carts == null)
                 {
                     carts = new List<CartItem>();
                 }
@@ -38,14 +38,14 @@ namespace MyProjectForJuly2020.Controllers
             return View(Carts);
         }
 
-        public IActionResult ThemVaoGio(Guid id, int qty = 1)
+        public IActionResult ThemVaoGio(Guid id, string addType, int qty = 1)
         {
             //lấy giỏ hàng hiện tại
             var myCart = Carts;
 
             //kiểm tra hàng đã có trong giỏ
             var item = myCart.SingleOrDefault(it => it.MaHangHoa == id);
-            if(item != null)//đã có
+            if (item != null)//đã có
             {
                 item.SoLuong += qty;
             }
@@ -57,6 +57,10 @@ namespace MyProjectForJuly2020.Controllers
                 myCart.Add(item);
             }
             HttpContext.Session.Set("GioHang", myCart);
+
+            if (addType == "ajax")
+                return PartialView("_CartView");
+
             return RedirectToAction("Index");
         }
     }
