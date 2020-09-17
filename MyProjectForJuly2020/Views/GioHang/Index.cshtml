@@ -38,24 +38,19 @@
                                             <td class="price"><span>@item.DonGia.ToVnd()</span></td>
                                             <td class="qty"><input class="form-control input-sm" type="text" value="@item.SoLuong"></td>
                                             <td class="price"><span>@item.ThanhTien.ToVnd()</span></td>
-                                            <td class="action"><a href="#"><i class="icon-close"></i></a></td>
+                                            <td class="action"><a asp-action="RemoveCartItem" asp-route-id="@item.MaHangHoa"><i class="icon-close"></i></a></td>
                                         </tr>
                                     }
                                 </tbody>
-                                <tfoot>
+                                <tfoot> 
                                     <tr>
-                                        <td colspan="2" rowspan="2"></td>
-                                        <td colspan="3">Total products (tax incl.)</td>
-                                        <td colspan="2">$237.88 </td>
-                                    </tr>
-                                    <tr>
-                                        <td colspan="3"><strong>Total</strong></td>
-                                        <td colspan="2"><strong>$237.88 </strong></td>
+                                        <td colspan="3"><strong>Tổng tiền</strong></td>
+                                        <td colspan="2"><strong>@Model.Sum(p => p.ThanhTien).ToVnd()</strong></td>
                                     </tr>
                                 </tfoot>
                             </table>
                         </div>
-                        <div class="cart_navigation"> <a class="continue-btn" href="#"><i class="fa fa-arrow-left"> </i>&nbsp; Continue shopping</a> <a class="checkout-btn" href="#"><i class="fa fa-check"></i> Proceed to checkout</a> </div>
+                        <div class="cart_navigation"> <a class="continue-btn" asp-controller="HangHoa"><i class="fa fa-arrow-left"> </i>&nbsp; Tiếp tục mua hàng</a> <a class="checkout-btn" href="#"><i class="fa fa-check"></i> Thanh toán</a> </div>
                     </div>
                 </div>
             </div>

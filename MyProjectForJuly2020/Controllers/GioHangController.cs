@@ -63,5 +63,23 @@ namespace MyProjectForJuly2020.Controllers
 
             return RedirectToAction("Index");
         }
+
+        public IActionResult RemoveCartItem(Guid id, bool isAjaxCall = false)
+        {
+            //lấy giỏ hàng hiện tại
+            var myCart = Carts;
+
+            //kiểm tra hàng đã có trong giỏ
+            var item = myCart.SingleOrDefault(it => it.MaHangHoa == id);
+            if(item != null)
+            {
+                myCart.Remove(item);
+                HttpContext.Session.Set("GioHang", myCart);
+            }
+
+            if (isAjaxCall) { }
+
+            return RedirectToAction("Index");
+        }
     }
 }
