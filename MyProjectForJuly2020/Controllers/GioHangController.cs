@@ -35,10 +35,10 @@ namespace MyProjectForJuly2020.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(Carts);
         }
 
-        public IActionResult ThemVaoGio(Guid id)
+        public IActionResult ThemVaoGio(Guid id, int qty = 1)
         {
             //lấy giỏ hàng hiện tại
             var myCart = Carts;
@@ -47,13 +47,13 @@ namespace MyProjectForJuly2020.Controllers
             var item = myCart.SingleOrDefault(it => it.MaHangHoa == id);
             if(item != null)//đã có
             {
-                item.SoLuong++;
+                item.SoLuong += qty;
             }
             else
             {
                 var hh = _context.HangHoas.FirstOrDefault(p => p.MaHangHoa == id);
                 item = _mapper.Map<CartItem>(hh);
-                item.SoLuong = 1;
+                item.SoLuong = qty;
                 myCart.Add(item);
             }
             HttpContext.Session.Set("GioHang", myCart);
