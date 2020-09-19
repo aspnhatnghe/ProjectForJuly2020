@@ -12,10 +12,19 @@ namespace MyProjectForJuly2020.Data
         public DbSet<HinhPhu> HinhPhus { get; set; }
         public DbSet<Review> Reviews { get; set; }
         public DbSet<ReviewHangHoa> ReviewHangHoas { get; set; }
+        public DbSet<KhachHang> KhachHangs { get; set; }
+        public DbSet<DonHang> DonHangs { get; set; }
+        public DbSet<DonHangChiTiet> DonHangChiTiets { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<KhachHang>(e => {
+                e.HasIndex(hh => hh.Email).IsUnique();
+            });
+            modelBuilder.Entity<DonHangChiTiet>(e => {
+                e.HasKey(ct => new { ct.MaDh, ct.MaHh});
+            });
             modelBuilder.Entity<HinhPhu>(e => {
                 e.HasOne(h => h.HangHoa)
                 .WithMany(hh => hh.HinhPhus)

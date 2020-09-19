@@ -1,13 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MyProjectForJuly2020.Data
+namespace MyProjectForJuly2020.ViewModels
 {
-    [Table("KhachHang")]
-    public class KhachHang
+    public class RegisterVM
     {
-        [Key]
-        public int MaKh { get; set; }
         [MaxLength(100)]
         [Required]
         public string HoTen { get; set; }
@@ -17,11 +13,10 @@ namespace MyProjectForJuly2020.Data
         [MaxLength(100)]
         [Required]
         public string Email { get; set; }
-        public string MatKhau { get; set; }
-        public string DiaChi { get; set; }
-        public bool DangHoatDong { get; set; }
-        [MaxLength(10)]
         [Required]
-        public string MaNgauNhien { get; set; }
+        public string MatKhau { get; set; }
+        [Compare("MatKhau", ErrorMessage ="Mật khẩu không khớp")]
+        public string NhapLaiMatKhau { get; set; }
+        public string DiaChi { get; set; }
     }
 }

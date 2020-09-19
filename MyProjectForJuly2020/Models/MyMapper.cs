@@ -9,6 +9,7 @@ namespace MyProjectForJuly2020.Models
         public MyMapper()
         {
             CreateMap<HangHoa, CartItem>();
+            CreateMap<RegisterVM, KhachHang>();
         }
     }
 }
