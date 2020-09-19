@@ -15,10 +15,15 @@ namespace MyProjectForJuly2020.Data
         public DbSet<KhachHang> KhachHangs { get; set; }
         public DbSet<DonHang> DonHangs { get; set; }
         public DbSet<DonHangChiTiet> DonHangChiTiets { get; set; }
+        public DbSet<Role> Roles { get; set; }
+        public DbSet<UserRole> UserRoles { get; set; }
         #endregion
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<UserRole>(e => {
+                e.HasKey(ct => new { ct.UserId, ct.RoleId });
+            });
             modelBuilder.Entity<KhachHang>(e => {
                 e.HasIndex(hh => hh.Email).IsUnique();
             });

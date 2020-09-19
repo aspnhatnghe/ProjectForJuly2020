@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using MyProjectForJuly2020.Data;
+using MyProjectForJuly2020.Helpers;
 using MyProjectForJuly2020.ViewModels;
+using System.Linq;
 
 namespace MyProjectForJuly2020.Controllers
 {
@@ -24,7 +26,62 @@ namespace MyProjectForJuly2020.Controllers
         [HttpPost]
         public IActionResult DangKy(RegisterVM model)
         {
+            if(ModelState.IsValid)
+            {
+                try
+                {
+                    var khachHang = _mapper.Map<KhachHang>(model);
+                    khachHang.MaNgauNhien = MyTools.GetRandom();
+                    khachHang.MatKhau = model.MatKhau.ToSHA512Hash(khachHang.MaNgauNhien);
+                    _context.Add(khachHang);
+                    _context.SaveChanges();
+
+                    return RedirectToAction("DangNhap");
+                }
+                catch
+                {
+                    return View();
+                }
+            }
             return View();
         }
+
+        #region Dang Nhap
+        [HttpGet]
+        public IActionResult DangNhap(string ReturnUrl = null)
+        {
+            ViewBag.ReturnUrl = ReturnUrl;
+            return View();
+        }
+
+        [HttpPost]
+        public IActionResult DangNhap(LoginVM model, string ReturnUrl = null)
+        {
+            ViewBag.ReturnUrl = ReturnUrl;
+            string thongBaoLoi = string.Empty;
+            if (ModelState.IsValid)
+            {
+                var khachHang = _context.KhachHangs.SingleOrDefault(kh => kh.Email == model.Email);
+                if(khachHang == null)
+                {
+                    ViewBag.ThongBaoLoi = "Tài khoản không tồn tại.";
+                    return View();
+                }
+                if (!khachHang.DangHoatDong)
+                {
+                    ViewBag.ThongBaoLoi = "Tài khoản đang bị khóa.";
+                    return View();
+                }
+                if(khachHang.MatKhau != model.MatKhau.ToSHA512Hash(khachHang.MatKhau))
+                {
+                    ViewBag.ThongBaoLoi = "Sai thông tin đăng nhập.";
+                    return View();
+                }
+            }
+
+            ViewBag.ThongBaoLoi = thongBaoLoi;
+            return View();
+        }
+        #endregion
     }
 }
