@@ -26,25 +26,37 @@ namespace MyProjectForJuly2020.Controllers
         [HttpPost]
         public IActionResult DangKy(RegisterVM model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
-                try
+                using (var transaction = _context.Database.BeginTransaction())
                 {
-                    var khachHang = _mapper.Map<KhachHang>(model);
-                    khachHang.MaNgauNhien = MyTools.GetRandom();
-                    khachHang.MatKhau = model.MatKhau.ToSHA512Hash(khachHang.MaNgauNhien);
-                    _context.Add(khachHang);
-                    _context.SaveChanges();
+                    try
+                    {
+                        var khachHang = _mapper.Map<KhachHang>(model);
+                        khachHang.MaNgauNhien = MyTools.GetRandom();
+                        khachHang.MatKhau = model.MatKhau.ToSHA512Hash(khachHang.MaNgauNhien);
+                        _context.Add(khachHang);
+                        _context.SaveChanges();
 
-                    //Add role for user, default Customer
+                        //Add role for user, default Customer
+                        var userRole = new UserRole
+                        {
+                            RoleId = 4,//Khách hàng
+                            UserId = khachHang.MaKh
+                        };
+                        _context.Add(userRole);
+                        _context.SaveChanges();
 
-
-                    return RedirectToAction("DangNhap");
+                        transaction.Commit();
+                        return RedirectToAction("DangNhap");
+                    }
+                    catch
+                    {
+                        transaction.Rollback();
+                        return View();
+                    }
                 }
-                catch
-                {
-                    return View();
-                }
+
             }
             return View();
         }
@@ -65,7 +77,7 @@ namespace MyProjectForJuly2020.Controllers
             if (ModelState.IsValid)
             {
                 var khachHang = _context.KhachHangs.SingleOrDefault(kh => kh.Email == model.Email);
-                if(khachHang == null)
+                if (khachHang == null)
                 {
                     ViewBag.ThongBaoLoi = "Tài khoản không tồn tại.";
                     return View();
@@ -75,7 +87,7 @@ namespace MyProjectForJuly2020.Controllers
                     ViewBag.ThongBaoLoi = "Tài khoản đang bị khóa.";
                     return View();
                 }
-                if(khachHang.MatKhau != model.MatKhau.ToSHA512Hash(khachHang.MatKhau))
+                if (khachHang.MatKhau != model.MatKhau.ToSHA512Hash(khachHang.MatKhau))
                 {
                     ViewBag.ThongBaoLoi = "Sai thông tin đăng nhập.";
                     return View();
