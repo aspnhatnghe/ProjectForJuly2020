@@ -36,6 +36,9 @@ namespace MyProjectForJuly2020.Controllers
                     _context.Add(khachHang);
                     _context.SaveChanges();
 
+                    //Add role for user, default Customer
+
+
                     return RedirectToAction("DangNhap");
                 }
                 catch

@@ -1,5 +1,6 @@
 using System;
 using AutoMapper;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -23,15 +24,25 @@ namespace MyProjectForJuly2020
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddDbContext<MyDbContext>(option => {
+            services.AddDbContext<MyDbContext>(option =>
+            {
                 option.UseSqlServer(Configuration.GetConnectionString("MyProjectDb"));
             });
-            
-            services.AddSession(opt => {
+
+            services.AddSession(opt =>
+            {
                 opt.IdleTimeout = TimeSpan.FromMinutes(5);
             });
 
             services.AddAutoMapper(typeof(Startup));
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(ck =>
+                {
+                    ck.LoginPath = "/KhachHang/DangNhap";
+                    ck.LogoutPath = "/KhachHang/DangXuat";
+                    ck.AccessDeniedPath = "/AccessDenied";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,7 +62,7 @@ namespace MyProjectForJuly2020
             app.UseStaticFiles();
 
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
             app.UseSession();
             app.UseEndpoints(endpoints =>
