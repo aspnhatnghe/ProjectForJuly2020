@@ -1,9 +1,15 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProjectForJuly2020.Data;
 using MyProjectForJuly2020.Helpers;
 using MyProjectForJuly2020.ViewModels;
+using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace MyProjectForJuly2020.Controllers
 {
@@ -70,7 +76,7 @@ namespace MyProjectForJuly2020.Controllers
         }
 
         [HttpPost]
-        public IActionResult DangNhap(LoginVM model, string ReturnUrl = null)
+        public async Task<IActionResult> DangNhap(LoginVM model, string ReturnUrl = null)
         {
             ViewBag.ReturnUrl = ReturnUrl;
             string thongBaoLoi = string.Empty;
@@ -87,10 +93,40 @@ namespace MyProjectForJuly2020.Controllers
                     ViewBag.ThongBaoLoi = "Tài khoản đang bị khóa.";
                     return View();
                 }
-                if (khachHang.MatKhau != model.MatKhau.ToSHA512Hash(khachHang.MatKhau))
+                if (khachHang.MatKhau != model.MatKhau.ToSHA512Hash(khachHang.MaNgauNhien))
                 {
                     ViewBag.ThongBaoLoi = "Sai thông tin đăng nhập.";
                     return View();
+                }
+
+                //set các claims
+                var claims = new List<Claim>()
+                {
+                    new Claim(ClaimTypes.Name, khachHang.HoTen),
+                    new Claim(ClaimTypes.Email, khachHang.Email),
+                    new Claim("MaNguoiDung", khachHang.MaKh.ToString())
+                };
+                var roles = _context.UserRoles.Where(r => r.UserId == khachHang.MaKh).Select(ur => ur.Role).ToList();
+                foreach (var role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role.RoleName));
+                }
+                var claimIdentity = new ClaimsIdentity(claims, "login");
+                var claimPrincipal = new ClaimsPrincipal(claimIdentity);
+                await HttpContext.SignInAsync(claimPrincipal);
+
+                if (Url.IsLocalUrl(ReturnUrl))
+                {
+                    return Redirect(ReturnUrl);
+                }
+                else
+                {
+                    //nếu là admin
+                    if (User.IsInRole("Quản trị Hệ thống"))
+                    {
+                        return Redirect("/admin/HangHoa");
+                    }
+                    return RedirectToAction(actionName: "Profile", controllerName: "KhachHang");
                 }
             }
 
@@ -98,5 +134,21 @@ namespace MyProjectForJuly2020.Controllers
             return View();
         }
         #endregion
+
+        [Authorize]
+        public IActionResult Profile()
+        {
+            var user = User.Identities;
+            return View();
+        }
+
+        [Authorize]
+        public async Task<IActionResult> DangXuat()
+        {
+            await HttpContext.SignOutAsync();
+            return RedirectToAction("/");
+        }
+
+        
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyProjectForJuly2020.Data;
 using MyProjectForJuly2020.Helpers;
@@ -6,6 +7,7 @@ using MyProjectForJuly2020.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 
 namespace MyProjectForJuly2020.Controllers
 {
@@ -80,6 +82,59 @@ namespace MyProjectForJuly2020.Controllers
             if (isAjaxCall) { }
 
             return RedirectToAction("Index");
+        }
+
+        [Authorize, HttpGet]
+        public IActionResult ThanhToan()
+        {
+            return View();
+        }
+
+        [Authorize, HttpPost]
+        public IActionResult ThanhToan(ThanhToanVM model)
+        {
+            if (ModelState.IsValid)
+            {
+                var emailKh = User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Email).Value;
+                var maKH = int.Parse(User.Claims.FirstOrDefault(c => c.Type == "MaNguoiDung").Value);
+                using (var trans = _context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        var donHang = new DonHang
+                        {
+                            MaDh = Guid.NewGuid(),
+                            MaKh = maKH,
+                            NgayDat = DateTime.UtcNow,
+                            TinhTrangDonHang = TinhTrangDonHang.MoiDatHang,
+                            DiaChiGiao = model.DiaChiGiao,
+                            NguoiNhan = model.NguoiNhan
+                        };
+                        _context.Add(donHang);
+                        foreach (var item in Carts)
+                        {
+                            _context.Add(new DonHangChiTiet
+                            {
+                                MaDh = donHang.MaDh,
+                                MaHh = item.MaHangHoa,
+                                SoLuong = item.SoLuong,
+                                DonGia = item.DonGia
+                            });
+                        }
+                        _context.SaveChanges();
+                        trans.Commit();
+                        HttpContext.Session.Remove("GioHang");
+                        return Redirect("/KhachHang/HangDaMua");
+                    }
+                    catch(Exception ex)
+                    {
+                        trans.Rollback();
+                        return View();
+                    }
+                }
+
+            }
+            return View();
         }
     }
 }
