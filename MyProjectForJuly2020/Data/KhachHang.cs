@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MyProjectForJuly2020.Data
@@ -23,6 +24,7 @@ namespace MyProjectForJuly2020.Data
         [MaxLength(10)]
         [Required]
         public string MaNgauNhien { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 
     [Table("Role")]
@@ -34,6 +36,7 @@ namespace MyProjectForJuly2020.Data
         [Required]
         public string RoleName { get; set; }
         public bool IsSystem { get; set; }
+        public virtual ICollection<UserRole> UserRoles { get; set; }
     }
 
     [Table("UserRole")]

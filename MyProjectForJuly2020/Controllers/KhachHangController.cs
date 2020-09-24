@@ -149,6 +149,10 @@ namespace MyProjectForJuly2020.Controllers
             return RedirectToAction("/");
         }
 
-        
+        public async Task<IActionResult> HangDaMua()
+        {
+            return View();
+        }
+
     }
 }

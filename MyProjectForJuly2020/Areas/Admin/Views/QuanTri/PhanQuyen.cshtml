@@ -1,0 +1,61 @@
+﻿@model IEnumerable<MyProjectForJuly2020.ViewModels.PhanQuyenVM>
+
+@{
+    ViewData["Title"] = "Phân Quyền";
+    Layout = "~/Views/Shared/_ShopLayout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<form asp-action="PhanQuyen">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.MaKh)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.HoTen)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.QuanTri)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BanHang)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ThuKho)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.KhachHang)
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.MaKh)
+                        <input type="hidden" value="@item.MaKh" name="MaKh" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.HoTen)
+                    </td>
+                    <td>
+                        <input name="QuanTri" @(item.QuanTri ? "checked" : "") type="checkbox" />
+                    </td>
+                    <td>
+                        <input name="BanHang" @(item.BanHang ? "checked" : "") type="checkbox" />
+                    </td>
+                    <td>
+                        <input name="ThuKho" @(item.ThuKho ? "checked" : "") type="checkbox" />
+                    </td>
+                    <td>
+                        <input name="KhachHang" @(item.KhachHang ? "checked" : "") type="checkbox" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <button class="btn btn-success">Cập nhật</button>
+</form>
