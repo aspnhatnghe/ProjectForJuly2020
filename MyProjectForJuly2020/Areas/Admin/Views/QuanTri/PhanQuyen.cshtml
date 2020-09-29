@@ -42,16 +42,20 @@
                         @Html.DisplayFor(modelItem => item.HoTen)
                     </td>
                     <td>
-                        <input name="QuanTri" @(item.QuanTri ? "checked" : "") type="checkbox" />
+                        <input class="check-role-item" @(item.QuanTri ? "checked" : "") type="checkbox" />
+                        <input name="QuanTri" value="@(item.QuanTri ? "true" : "false")" type="hidden" />
                     </td>
                     <td>
-                        <input name="BanHang" @(item.BanHang ? "checked" : "") type="checkbox" />
+                        <input class="check-role-item" @(item.BanHang ? "checked" : "") type="checkbox" />
+                        <input name="QuanTri" value="@(item.BanHang ? "true" : "false")" type="hidden" />
                     </td>
                     <td>
-                        <input name="ThuKho" @(item.ThuKho ? "checked" : "") type="checkbox" />
+                        <input class="check-role-item" @(item.ThuKho ? "checked" : "") type="checkbox" />
+                        <input name="QuanTri" value="@(item.ThuKho ? "true" : "false")" type="hidden" />
                     </td>
                     <td>
-                        <input name="KhachHang" @(item.KhachHang ? "checked" : "") type="checkbox" />
+                        <input class="check-role-item" @(item.KhachHang ? "checked" : "") type="checkbox" />
+                        <input name="QuanTri" value="@(item.KhachHang ? "true" : "false")" type="hidden" />
                     </td>
                 </tr>
             }
@@ -59,3 +63,17 @@
     </table>
     <button class="btn btn-success">Cập nhật</button>
 </form>
+@section Scripts{ 
+<script>
+    $(document).ready(function () {
+        $(".check-role-item").click(function () {
+            if ($(this).is(":checked")) {
+                $(this).next().val("true");
+            }
+            else {
+                $(this).next().val("false");
+            }
+        });
+    });
+</script>
+}

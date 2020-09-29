@@ -41,6 +41,7 @@
   <ItemGroup>
     <Folder Include="Areas\Admin\Data\" />
     <Folder Include="Areas\Admin\Models\" />
+    <Folder Include="DbScript\" />
     <Folder Include="wwwroot\Hinh\HangHoa\" />
   </ItemGroup>
 

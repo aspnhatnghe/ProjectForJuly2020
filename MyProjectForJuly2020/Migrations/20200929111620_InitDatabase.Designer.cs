@@ -10,8 +10,8 @@ using MyProjectForJuly2020.Data;
 namespace MyProjectForJuly2020.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    [Migration("20200919131638_AddRole")]
-    partial class AddRole
+    [Migration("20200929111620_InitDatabase")]
+    partial class InitDatabase
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -398,13 +398,13 @@ namespace MyProjectForJuly2020.Migrations
             modelBuilder.Entity("MyProjectForJuly2020.Data.UserRole", b =>
                 {
                     b.HasOne("MyProjectForJuly2020.Data.Role", "Role")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MyProjectForJuly2020.Data.KhachHang", "User")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

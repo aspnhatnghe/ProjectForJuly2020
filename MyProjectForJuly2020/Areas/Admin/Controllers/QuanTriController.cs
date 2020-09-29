@@ -47,9 +47,9 @@ namespace MyProjectForJuly2020.Areas.Admin.Controllers
 
         //[Authorize(Roles ="Quản trị Hệ thống"),
         [HttpPost]
-        public IActionResult PhanQuyen(List<int> MaKh, List<bool> QuanTri)
+        public IActionResult PhanQuyen(List<int> MaKh, List<bool> QuanTri, List<bool> ThuKho, List<bool> BanHang, List<bool> KhachHang)
         {
-            return View();
+            return RedirectToAction("PhanQuyen");
         }
     }
 }

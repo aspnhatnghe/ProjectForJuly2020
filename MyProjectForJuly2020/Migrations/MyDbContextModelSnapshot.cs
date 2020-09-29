@@ -396,13 +396,13 @@ namespace MyProjectForJuly2020.Migrations
             modelBuilder.Entity("MyProjectForJuly2020.Data.UserRole", b =>
                 {
                     b.HasOne("MyProjectForJuly2020.Data.Role", "Role")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("MyProjectForJuly2020.Data.KhachHang", "User")
-                        .WithMany()
+                        .WithMany("UserRoles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();

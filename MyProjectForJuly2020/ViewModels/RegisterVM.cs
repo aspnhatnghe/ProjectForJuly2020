@@ -17,10 +17,13 @@ namespace MyProjectForJuly2020.ViewModels
         public string Email { get; set; }
         [Required]
         [DataType(DataType.Password)]
+        [Display(Name = "Mật khẩu")]
         public string MatKhau { get; set; }
         [Compare("MatKhau", ErrorMessage ="Mật khẩu không khớp")]
         [DataType(DataType.Password)]
+        [Display(Name = "Nhập lại mật khẩu")]
         public string NhapLaiMatKhau { get; set; }
+        [Display(Name = "Địa chỉ")]
         public string DiaChi { get; set; }
     }
 }

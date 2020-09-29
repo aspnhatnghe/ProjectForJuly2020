@@ -10,7 +10,7 @@
         {
             var level2 = dataLoai.Where(lo => lo.MaLoaiCha == lv1.MaLoai);
             <li>
-                <a asp-controller="HangHoa" asp-route-MaLoai="@lv1.MaLoai">@lv1.TenLoai</a>
+                <a asp-controller="HangHoa" asp-route-MaLoai="@lv1.MaLoai" asp-action="Index">@lv1.TenLoai</a>
                 <div class="wrap-popup">
                     <div class="popup">
                         <div class="row">
@@ -19,7 +19,7 @@
                                 var level3 = dataLoai.Where(lo => lo.MaLoaiCha == lv2.MaLoai);
                                 <div class="col-md-4 col-sm-6">
                                     <h3>
-                                        <a asp-controller="HangHoa" asp-route-MaLoai="@lv2.MaLoai">@lv2.TenLoai</a>
+                                        <a asp-controller="HangHoa" asp-route-MaLoai="@lv2.MaLoai" asp-action="Index">@lv2.TenLoai</a>
                                     </h3>
                                     @if (level3.Any())
                                     {
@@ -27,7 +27,7 @@
                                             @foreach (var lv3 in level3)
                                             {
                                                 <li>
-                                                    <a asp-controller="HangHoa" asp-route-MaLoai="@lv3.MaLoai">
+                                                    <a asp-controller="HangHoa" asp-route-MaLoai="@lv3.MaLoai" asp-action="Index">
                                                         @lv3.TenLoai
                                                     </a>
                                                 </li>
